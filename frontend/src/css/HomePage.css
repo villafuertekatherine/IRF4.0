@@ -1,0 +1,53 @@
+.homepage-container {
+  padding: 20px;
+  background-color: #f4f4f9;
+  min-height: 100vh;
+  background-image: url('./Landing Page - Background.webp'); /* Ensure the path is relative to the CSS file */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+}
+
+section {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="date"] {
+  margin: 10px 0;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}

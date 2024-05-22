@@ -1,0 +1,88 @@
+/* General page styles */
+.page-container {
+    padding: 20px;
+    background-color: #f4f4f9;
+    min-height: 100vh;
+    background-image: url('./Landing Page - Background.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #333; /* Default text color */
+    font-family: Arial, sans-serif; /* Consistent font style */
+}
+
+h1 {
+    font-size: 2em; /* Responsive font size */
+    color: #0056b3; /* Consistent theme color */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styles for buttons */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: left;
+    padding: 12px; /* Slightly larger padding for better readability */
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Section styling */
+section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px; /* Slightly larger radius for a softer look */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Larger shadow for more depth */
+    margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+    /* Responsive styles */
+    th, td {
+        padding: 10px; /* Adjust padding in smaller screens */
+    }
+
+    button {
+        padding: 8px 15px; /* Smaller buttons on mobile */
+    }
+
+    .page-container {
+        padding: 10px; /* Less padding on smaller screens */
+    }
+}
