@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/DischargeModal.css';
 
-const DischargeModal = ({ isOpen, onClose, onConfirm, dischargeDate, setDischargeDate }) => {
+const DischargeModal = ({ isOpen, onClose, onConfirm, dischargeDate, setDischargeDate, errorMessage }) => {
     if (!isOpen) return null;
 
     return (
@@ -13,6 +13,7 @@ const DischargeModal = ({ isOpen, onClose, onConfirm, dischargeDate, setDischarg
                     value={dischargeDate}
                     onChange={(e) => setDischargeDate(e.target.value)}
                 />
+                {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display the error message */}
                 <div className="modal-buttons">
                     <button onClick={onConfirm} className="confirm-button">Confirm</button>
                     <button onClick={onClose} className="cancel-button">Cancel</button>

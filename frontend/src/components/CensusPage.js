@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
 import '../css/CensusPage.css'; // Make sure this CSS file is styled appropriately
 import Modal from '../notifications/DischargeModal'; // Assuming you have a separate DischargeModal component
 
 const CensusPage = () => {
     const location = useLocation();
+    const navigate = useNavigate(); // Initialize useNavigate
     const [censusData, setCensusData] = useState([]);
     const [selectedPatientId, setSelectedPatientId] = useState(null);
     const [dischargeDate, setDischargeDate] = useState('');
     const [isDischargeModalOpen, setIsDischargeModalOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); // Add this line
 
     useEffect(() => {
         const fetchCensusData = async () => {
@@ -41,11 +43,12 @@ const CensusPage = () => {
     const handleCloseDischargeModal = () => {
         setIsDischargeModalOpen(false);
         setDischargeDate('');
+        setErrorMessage(''); // Reset the error message when closing the modal
     };
 
     const handleDischarge = async () => {
         if (!dischargeDate) {
-            alert("Please select a discharge date before submitting.");
+            setErrorMessage("Please select a discharge date before submitting.");
             return;
         }
         try {
@@ -55,6 +58,11 @@ const CensusPage = () => {
             handleCloseDischargeModal();
             window.location.reload(); // Reload the page to reflect changes
         } catch (error) {
+            if (error.response && error.response.data) {
+                setErrorMessage(error.response.data); // Set the error message from the backend
+            } else {
+                setErrorMessage('Failed to update discharge date. Please try again.');
+            }
             console.error('Failed to update discharge date:', error);
         }
     };
@@ -62,6 +70,7 @@ const CensusPage = () => {
     return (
         <div className="census-container">
             <h1>Census Page</h1>
+            <button onClick={() => navigate('/home')} className="back-button">Back to Home Page</button> {/* Add Back to Home button */}
             <section>
                 <h2>Census Data for {location.state?.censusDate}</h2>
                 <table>
@@ -114,6 +123,7 @@ const CensusPage = () => {
                     onConfirm={handleDischarge}
                     dischargeDate={dischargeDate}
                     setDischargeDate={setDischargeDate}
+                    errorMessage={errorMessage} // Pass the error message to the modal
                 />
             )}
         </div>
