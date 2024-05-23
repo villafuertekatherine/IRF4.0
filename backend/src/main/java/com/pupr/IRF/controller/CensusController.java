@@ -3,7 +3,7 @@ package com.pupr.IRF.controller;
 import com.pupr.IRF.model.CensusModel;
 import com.pupr.IRF.model.AdmittedPatientModel;
 import com.pupr.IRF.repository.CensusRepository;
-import com.pupr.IRF.repository.AdmittedPatientRepository; // Import the repository
+import com.pupr.IRF.repository.AdmittedPatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class CensusController {
     private CensusRepository censusRepository;
 
     @Autowired
-    private AdmittedPatientRepository admittedPatientRepository; // Add this line
+    private AdmittedPatientRepository admittedPatientRepository;
 
     @GetMapping("/census")
     public ResponseEntity<List<CensusModel>> getCensus(@RequestParam("censusDate") LocalDate censusDate) {
@@ -34,6 +34,7 @@ public class CensusController {
 
             if (patients.isEmpty()) {
                 censusList.add(new CensusModel(
+                        null, // No id for empty rooms
                         roomNumber,
                         null,
                         "",  // Empty name field for unoccupied rooms
@@ -46,6 +47,7 @@ public class CensusController {
             } else {
                 AdmittedPatientModel patient = patients.get(0); // Get the first patient if there are multiple
                 censusList.add(new CensusModel(
+                        patient.getId(), // Add the id here
                         roomNumber,
                         patient.getAdmissionDate().toString(),
                         patient.getName(),

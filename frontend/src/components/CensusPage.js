@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../css/CensusPage.css'; // Make sure this CSS file is styled appropriately
+import Modal from '../notifications/DischargeModal'; // Assuming you have a separate DischargeModal component
 
 const CensusPage = () => {
     const location = useLocation();
@@ -32,29 +33,29 @@ const CensusPage = () => {
         return new Date(date1).toISOString().split('T')[0] === new Date(date2).toISOString().split('T')[0];
     };
 
-    const openDischargeModal = (patientId) => {
+    const handleOpenDischargeModal = (patientId) => {
         setSelectedPatientId(patientId);
         setIsDischargeModalOpen(true);
     };
 
-    const closeDischargeModal = () => {
+    const handleCloseDischargeModal = () => {
         setIsDischargeModalOpen(false);
         setDischargeDate('');
     };
 
     const handleDischarge = async () => {
-        if (selectedPatientId && dischargeDate) {
-            try {
-                const payload = { dischargeDate };
-                await axios.post(`http://localhost:8080/api/update-discharge-date/${selectedPatientId}`, payload);
-                closeDischargeModal();
-                window.location.reload();
-            } catch (error) {
-                console.error('Failed to update discharge date:', error);
-                alert(error.response?.data || 'Failed to update discharge date. Please try again.');
-            }
-        } else {
+        if (!dischargeDate) {
             alert("Please select a discharge date before submitting.");
+            return;
+        }
+        try {
+            await axios.post(`http://localhost:8080/api/update-discharge-date/${selectedPatientId}`, {
+                dischargeDate
+            });
+            handleCloseDischargeModal();
+            window.location.reload(); // Reload the page to reflect changes
+        } catch (error) {
+            console.error('Failed to update discharge date:', error);
         }
     };
 
@@ -92,7 +93,9 @@ const CensusPage = () => {
                                 <td>{data.dischargeDate}</td>
                                 <td>
                                     {data.name && (
-                                        <button onClick={() => openDischargeModal(data.id)}>Set Discharge Date</button>
+                                        <button onClick={() => handleOpenDischargeModal(data.id)}>
+                                            Set Discharge Date
+                                        </button>
                                     )}
                                 </td>
                             </tr>
@@ -101,19 +104,13 @@ const CensusPage = () => {
                 </table>
             </section>
             {isDischargeModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h3>Select the discharge date:</h3>
-                        <input
-                            type="date"
-                            value={dischargeDate}
-                            onChange={e => setDischargeDate(e.target.value)}
-                            style={{ margin: '10px 0', display: 'block', width: '100%' }}
-                        />
-                        <button onClick={handleDischarge}>Confirm</button>
-                        <button onClick={closeDischargeModal}>Cancel</button>
-                    </div>
-                </div>
+                <Modal
+                    isOpen={isDischargeModalOpen}
+                    onClose={handleCloseDischargeModal}
+                    onConfirm={handleDischarge}
+                    dischargeDate={dischargeDate}
+                    setDischargeDate={setDischargeDate}
+                />
             )}
         </div>
     );

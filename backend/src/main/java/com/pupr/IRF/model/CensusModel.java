@@ -1,6 +1,7 @@
 package com.pupr.IRF.model;
 
 public class CensusModel {
+    private Long id;
     private String roomNumber;
     private String admissionDate;
     private String name;
@@ -11,7 +12,8 @@ public class CensusModel {
     private String dischargeDate; // Add this field for discharge date
 
     // Constructors
-    public CensusModel(String roomNumber, String admissionDate, String name, Integer age, String sex, String plan, String dx, String dischargeDate) {
+    public CensusModel(Long id, String roomNumber, String admissionDate, String name, Integer age, String sex, String plan, String dx, String dischargeDate) {
+        this.id = id;
         this.roomNumber = roomNumber;
         this.admissionDate = admissionDate;
         this.name = name;
@@ -88,5 +90,13 @@ public class CensusModel {
 
     public void setDischargeDate(String dischargeDate) {
         this.dischargeDate = dischargeDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
