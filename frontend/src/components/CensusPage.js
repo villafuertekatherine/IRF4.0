@@ -83,7 +83,11 @@ const CensusPage = () => {
                             <tr key={index}>
                                 <td>{data.roomNumber}</td>
                                 <td>{data.admissionDate}</td>
-                                <td className={isSameDate(data.admissionDate, location.state.censusDate) ? "highlight-admission" : (data.name === "" ? "empty-room" : "")}>
+                                <td className={
+                                    isSameDate(data.admissionDate, location.state.censusDate) ? "highlight-admission" :
+                                    isSameDate(data.dischargeDate, location.state.censusDate) ? "highlight-discharge" :
+                                    (data.name === "" ? "empty-room" : "")
+                                }>
                                     {data.name}
                                 </td>
                                 <td>{data.age}</td>

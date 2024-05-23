@@ -49,6 +49,10 @@ tbody tr:hover {
     background-color: #cce6ff; /* Brighter color for admission highlights */
 }
 
+.highlight-discharge {
+    background-color: #f8d7da; /* Light red color */
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
