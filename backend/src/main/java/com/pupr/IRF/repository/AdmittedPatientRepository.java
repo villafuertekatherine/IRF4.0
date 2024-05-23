@@ -16,4 +16,10 @@ public interface AdmittedPatientRepository extends JpaRepository<AdmittedPatient
             @Param("roomNumber") String roomNumber,
             @Param("admissionDate") LocalDate admissionDate
     );
+
+    @Query("SELECT ap FROM AdmittedPatientModel ap WHERE ap.roomNumber = :roomNumber AND (:censusDate BETWEEN ap.admissionDate AND COALESCE(ap.dischargeDate, :censusDate))")
+    List<AdmittedPatientModel> findPatientsByRoomAndDate(
+            @Param("roomNumber") String roomNumber,
+            @Param("censusDate") LocalDate censusDate
+    );
 }

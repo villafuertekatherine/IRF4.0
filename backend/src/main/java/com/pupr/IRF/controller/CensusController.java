@@ -3,6 +3,7 @@ package com.pupr.IRF.controller;
 import com.pupr.IRF.model.CensusModel;
 import com.pupr.IRF.model.AdmittedPatientModel;
 import com.pupr.IRF.repository.CensusRepository;
+import com.pupr.IRF.repository.AdmittedPatientRepository; // Import the repository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -17,6 +20,9 @@ public class CensusController {
 
     @Autowired
     private CensusRepository censusRepository;
+
+    @Autowired
+    private AdmittedPatientRepository admittedPatientRepository; // Add this line
 
     @GetMapping("/census")
     public ResponseEntity<List<CensusModel>> getCensus(@RequestParam("censusDate") LocalDate censusDate) {
@@ -53,5 +59,29 @@ public class CensusController {
         }
 
         return ResponseEntity.ok(censusList);
+    }
+
+    @PostMapping("/update-discharge-date/{id}")
+    public ResponseEntity<?> updateDischargeDate(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        Optional<AdmittedPatientModel> admittedPatientOptional = admittedPatientRepository.findById(id);
+        if (admittedPatientOptional.isPresent()) {
+            AdmittedPatientModel admittedPatient = admittedPatientOptional.get();
+
+            String dateString = payload.get("dischargeDate");
+            if (dateString == null || dateString.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Discharge date is required.");
+            }
+            LocalDate dischargeDate = LocalDate.parse(dateString);
+
+            if (dischargeDate.isBefore(admittedPatient.getAdmissionDate())) {
+                return ResponseEntity.badRequest().body("Discharge date cannot be before admission date.");
+            }
+
+            admittedPatient.setDischargeDate(dischargeDate);
+            admittedPatientRepository.save(admittedPatient);
+            return ResponseEntity.ok(admittedPatient);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
