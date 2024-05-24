@@ -115,6 +115,7 @@ const PreAdmissionsPage = () => {
     return (
         <div className="page-container">
             <h1>Pre-Admissions Page</h1>
+            <button onClick={() => navigate('/home')} className="back-button">Back to Home Page</button> {/* Add Back to Home button */}
             <section>
                 <h2>Admissions</h2>
                 {weekStartDate && weekEndDate && (
