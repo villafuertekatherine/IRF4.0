@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../css/HomePage.css'; // Make sure this CSS file is imported
 
 const HomePage = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [censusDate, setCensusDate] = useState('');
     const [error, setError] = useState('');
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
     const navigate = useNavigate();
 
     const handleStartDateChange = (e) => {
@@ -41,14 +43,32 @@ const HomePage = () => {
         }
     };
 
+    const handleLogout = () => {
+        // Clear the user's session or token (this example assumes token in local storage)
+        localStorage.removeItem('authToken');
+        navigate('/login');
+    };
+
     return (
         <div className="homepage-container">
             <h1>Home Page</h1>
+            <button onClick={() => setShowLogoutModal(true)} className="button logout-button">Log Out</button>
+            {showLogoutModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Are you sure you want to log out?</h2>
+                        <div className="modal-buttons">
+                            <button onClick={handleLogout} className="button">Yes</button>
+                            <button onClick={() => setShowLogoutModal(false)} className="button">No</button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <section>
                 <h2>Pre-Admissions Page - Week Selection</h2>
                 <p>
-                    Please select a week start date for which to view the Pre-Admissions Page. The start date must be a Monday,
-                    and the end date will be the calculated as the corresponding Sunday from the selected week start date.
+                    Select a start date for the week you wish to view on the Pre-Admissions Page.
+                    The start date must be a Monday. The end date will automatically be set to the following Sunday.
                 </p>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -70,12 +90,12 @@ const HomePage = () => {
                         />
                     </div>
                     {error && <p className="error">{error}</p>}
-                    <button type="submit">View Pre-Admissions Data</button>
+                    <button type="submit" className="button">View Pre-Admissions Data</button>
                 </form>
             </section>
             <section>
                 <h2>Census Page - Date Selection</h2>
-                <p>Please select a date for which to view the Census Page</p>
+                <p>Please select a date to view the Census Page</p>
                 <form onSubmit={handleCensusSubmit}>
                     <div>
                         <label>Census Date:</label>
@@ -87,7 +107,7 @@ const HomePage = () => {
                         />
                     </div>
                     {error && <p className="error">{error}</p>}
-                    <button type="submit">View Census Data</button>
+                    <button type="submit" className="button">View Census Data</button>
                 </form>
             </section>
         </div>

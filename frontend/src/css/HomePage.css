@@ -51,3 +51,31 @@ button:hover {
   color: red;
   font-weight: bold;
 }
+
+/* Add this to your CSS file */
+.button {
+    background-color: #5a789e; /* Use the color from the Back to Home Page button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #3b5a7c; /* Darker shade for hover effect */
+}
+
+.logout-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+
+
