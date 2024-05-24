@@ -19,6 +19,7 @@ const PreAdmissionsPage = () => {
     const [weekStartDate, setWeekStartDate] = useState('');
     const [weekEndDate, setWeekEndDate] = useState('');
     const [assignErrorMessage, setAssignErrorMessage] = useState('');
+    const [admitErrorMessage, setAdmitErrorMessage] = useState(''); // Add this line
 
     useEffect(() => {
         const fetchPatients = async () => {
@@ -58,6 +59,10 @@ const PreAdmissionsPage = () => {
     };
 
     const handleAdmit = async () => {
+        if (!selectedRoom) {
+            setAdmitErrorMessage("Please select a room before submitting.");
+            return;
+        }
         if (selectedPatientId && selectedRoom) {
             try {
                 const payload = {
@@ -68,17 +73,16 @@ const PreAdmissionsPage = () => {
                 closeModal();
                 setShowAdmitSuccessModal(true);
             } catch (error) {
+                setAdmitErrorMessage(error.response?.data || 'Failed to admit patient. Please try again.');
                 console.error('Failed to admit patient:', error);
-                alert(error.response?.data || 'Failed to admit patient. Please try again.');
-                closeModal();
             }
         } else {
-            alert("Please select a room before submitting.");
+            setAdmitErrorMessage("Please select a room before submitting.");
         }
     };
 
     const handleAssign = async () => {
-        if (!admissionDate) {  // Add this block to check if admissionDate is not set
+        if (!admissionDate) {
             setAssignErrorMessage("Please select a date before submitting.");
             return;
         }
@@ -92,7 +96,7 @@ const PreAdmissionsPage = () => {
                 setShowAdmitSuccessModal(true);
             } catch (error) {
                 console.error('Failed to assign patient:', error);
-                closeAssignModal();
+                setAssignErrorMessage(error.response?.data || 'Failed to assign patient. Please try again.');
             }
         } else {
             setAssignErrorMessage("Please select a date before submitting.");
@@ -111,6 +115,7 @@ const PreAdmissionsPage = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setAdmitErrorMessage(''); // Reset the error message when closing the modal
     };
 
     const closeAssignModal = () => {
@@ -226,6 +231,7 @@ const PreAdmissionsPage = () => {
                 message="Are you sure you want to admit this patient? If so select a room:"
                 confirmButtonText="Confirm Admission"
                 cancelButtonText="Cancel"
+                errorMessage={admitErrorMessage} // Pass the error message to the modal
             >
                 <select
                     value={selectedRoom}
