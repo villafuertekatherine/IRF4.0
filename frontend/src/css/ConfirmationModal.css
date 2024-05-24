@@ -30,3 +30,10 @@
 .button-cancel:hover {
     background-color: #c0c0c0; /* Slightly darker grey on hover */
 }
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-weight: bold;
+}
+

@@ -1,18 +1,19 @@
 import React from 'react';
 import '../css/ConfirmationModal.css';
 
-// Inside ConfirmationModal.js
-const ConfirmationModal = ({ isOpen, onClose, onConfirm, message, confirmButtonText, cancelButtonText, children }) => {
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, message, confirmButtonText, cancelButtonText, children, errorMessage }) => {
     if (!isOpen) return null;
 
     return (
         <div className="modal-overlay">
-            <div className="modal">
-                <p>{message}</p>
-                {/* This will render any extra content passed into the modal */}
+            <div className="modal-content">
+                <h2>{message}</h2>
                 {children}
-                <button onClick={onConfirm}>{confirmButtonText}</button>
-                <button onClick={onClose} className="button-cancel">{cancelButtonText}</button>
+                {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display the error message */}
+                <div className="modal-buttons">
+                    <button onClick={onConfirm} className="confirm-button">{confirmButtonText}</button>
+                    <button onClick={onClose} className="cancel-button">{cancelButtonText}</button>
+                </div>
             </div>
         </div>
     );

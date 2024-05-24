@@ -18,6 +18,7 @@ const PreAdmissionsPage = () => {
     const [admissionDate, setAdmissionDate] = useState('');
     const [weekStartDate, setWeekStartDate] = useState('');
     const [weekEndDate, setWeekEndDate] = useState('');
+    const [assignErrorMessage, setAssignErrorMessage] = useState('');
 
     useEffect(() => {
         const fetchPatients = async () => {
@@ -77,6 +78,10 @@ const PreAdmissionsPage = () => {
     };
 
     const handleAssign = async () => {
+        if (!admissionDate) {  // Add this block to check if admissionDate is not set
+            setAssignErrorMessage("Please select a date before submitting.");
+            return;
+        }
         if (selectedPatientId && admissionDate) {
             try {
                 const payload = {
@@ -90,7 +95,7 @@ const PreAdmissionsPage = () => {
                 closeAssignModal();
             }
         } else {
-            alert("Please select a date before submitting.");
+            setAssignErrorMessage("Please select a date before submitting.");
         }
     };
 
@@ -110,6 +115,8 @@ const PreAdmissionsPage = () => {
 
     const closeAssignModal = () => {
         setIsAssignModalOpen(false);
+        setAdmissionDate('');
+        setAssignErrorMessage(''); // Reset the error message when closing the modal
     };
 
     return (
@@ -238,6 +245,7 @@ const PreAdmissionsPage = () => {
                 message="Are you sure you want to assign this patient? If so select a date of admission:"
                 confirmButtonText="Confirm Assignment"
                 cancelButtonText="Cancel"
+                errorMessage={assignErrorMessage} // Pass the error message to the modal
             >
                 <input
                     type="date"
